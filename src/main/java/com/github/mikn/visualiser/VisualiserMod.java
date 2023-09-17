@@ -7,7 +7,7 @@ import net.fabricmc.api.ModInitializer;
 
 public class VisualiserMod implements ModInitializer {
 
-    public static final String MODID = "visualier";
+    public static final String MODID = "visualiser";
     public static final Logger LOGGER = LogManager.getLogger("Visualiser/Main");
 
     @Override
