@@ -5,7 +5,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -43,9 +42,22 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
     }
 
     private void renderSlotItems(GuiGraphics guiGraphics, Font font, int x, int y) {
-        ItemStack itemStack = this.items.get(0);
-        guiGraphics.renderItem(itemStack, x + 4, y + 18, 0);
-        guiGraphics.renderItemDecorations(font, itemStack, x + 4, y + 18);
+        int i = 0;
+        for(ItemStack itemStack: this.items) {
+            if(i < 6) {
+                // render the 1st row
+                guiGraphics.renderItem(itemStack, x + MARGIN_X + 18 * i, y + 18, 0);
+                guiGraphics.renderItemDecorations(font, itemStack, x + MARGIN_X + 18 * i, y + 18);
+            } else if (i < 12){
+                // render the 2nd row
+                guiGraphics.renderItem(itemStack, x + MARGIN_X + 18 * (i - 6), y + 36, 0);
+                guiGraphics.renderItemDecorations(font, itemStack, x + MARGIN_X + 18 * (i - 6), y + 36);
+            } else {
+                // break loop because rows more than two do not exist.
+                break;
+            }
+            ++i;
+        }
     }
 
     private int gridSizeX() {
@@ -58,8 +70,7 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
 
     @Environment(value= EnvType.CLIENT)
     enum Texture {
-        IMAGE(0, 0, 255, 255),
-        SLOT1(8, 11, 23, 26);
+        IMAGE(0, 0, 255, 255);
 
         public final int x;
         public final int y;
