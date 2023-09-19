@@ -17,14 +17,13 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
     private final NonNullList<ItemStack> items;
     private final int weight;
 
-    public ClientShulkerBoxTooltip(ShulkerBoxTooltip bundleTooltip) {
-        this.items = bundleTooltip.getItems();
-        this.weight = bundleTooltip.getWeight();
+    public ClientShulkerBoxTooltip(ShulkerBoxTooltip shulkerBoxTooltip) {
+        this.items = shulkerBoxTooltip.getItems();
+        this.weight = shulkerBoxTooltip.getWeight();
     }
 
     @Override
     public int getHeight() {
-//        return this.gridSizeY() * 20 + 2 + 4;
         return 0;
     }
 
@@ -36,10 +35,17 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
     @Override
     public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
         this.blit(guiGraphics, x - MARGIN_X, y, Texture.IMAGE);
+        this.renderSlotItems(guiGraphics, font, x, y);
     }
 
     private void blit(GuiGraphics guiGraphics, int x, int y, ClientShulkerBoxTooltip.Texture texture) {
         guiGraphics.blit(TEXTURE_LOCATION, x, y, 0, (float)texture.x, texture.y, texture.w, texture.h, 256, 256);
+    }
+
+    private void renderSlotItems(GuiGraphics guiGraphics, Font font, int x, int y) {
+        ItemStack itemStack = this.items.get(0);
+        guiGraphics.renderItem(itemStack, x + 4, y + 18, 0);
+        guiGraphics.renderItemDecorations(font, itemStack, x + 4, y + 18);
     }
 
     private int gridSizeX() {
@@ -52,7 +58,8 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
 
     @Environment(value= EnvType.CLIENT)
     enum Texture {
-        IMAGE(0, 0, 255, 255);
+        IMAGE(0, 0, 255, 255),
+        SLOT1(8, 11, 23, 26);
 
         public final int x;
         public final int y;

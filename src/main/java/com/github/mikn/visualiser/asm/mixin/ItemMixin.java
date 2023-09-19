@@ -20,7 +20,9 @@ public class ItemMixin {
         if(stack.is(Items.SHULKER_BOX)) {
             NonNullList<ItemStack> nonNullList = NonNullList.create();
             // Temporarily add substitute items to the list.
-            nonNullList.add(new ItemStack(Items.ACACIA_DOOR));
+            ItemStack itemStack = new ItemStack(Items.ACACIA_DOOR);
+            itemStack.setCount(64);
+            nonNullList.add(itemStack);
             var o = Optional.of(new ShulkerBoxTooltip(nonNullList, 1));
             cir.setReturnValue(o);
         }
