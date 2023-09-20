@@ -7,10 +7,14 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 @Config(name = VisualiserMod.MODID)
 public class VisualiserModConfig implements ConfigData {
-    public enum OverlayStyleEnum {
-        ON_TOP, ON_BELOW, INSIDE_TOOLTIP
+    public enum OverlayPositionEnum {
+        ON_TOP, ON_BELOW
     }
-    @ConfigEntry.Gui.RequiresRestart
+    public enum OverlayStyleEnum {
+        INSIDE_TOOLTIP, OUTSIDE_TOOLTIP
+    }
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-    public OverlayStyleEnum style = OverlayStyleEnum.ON_BELOW;
+    public OverlayPositionEnum position = OverlayPositionEnum.ON_BELOW;
+    @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+    public OverlayStyleEnum style = OverlayStyleEnum.OUTSIDE_TOOLTIP;
 }

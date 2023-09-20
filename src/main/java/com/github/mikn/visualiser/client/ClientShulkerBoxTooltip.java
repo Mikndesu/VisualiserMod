@@ -1,6 +1,7 @@
 package com.github.mikn.visualiser.client;
 
 import com.github.mikn.visualiser.VisualiserMod;
+import com.github.mikn.visualiser.config.VisualiserModConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.Font;
@@ -36,6 +37,7 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
 
     @Override
     public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
+        y = y + (VisualiserMod.HOLDER.position == VisualiserModConfig.OverlayPositionEnum.ON_BELOW ? 2 : -66);
         this.blit(guiGraphics, x - MARGIN_X, y, Texture.IMAGE);
         this.renderSlotItems(guiGraphics, font, x, y);
     }

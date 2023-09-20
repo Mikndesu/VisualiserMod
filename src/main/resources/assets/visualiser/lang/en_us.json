@@ -1,4 +1,5 @@
 {
   "text.autoconfig.visualiser.title": "Configuration Menu for Visualiser",
-  "text.autoconfig.visualiser.option.style": "Style of shown preview"
+  "text.autoconfig.visualiser.option.style": "Preview style",
+  "text.autoconfig.visualiser.option.position": "Position where preview window appears"
 }
