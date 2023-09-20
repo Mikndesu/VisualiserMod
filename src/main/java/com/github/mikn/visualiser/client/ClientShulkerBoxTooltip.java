@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import static java.lang.Math.floor;
 
 public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
-    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(VisualiserMod.MODID, "textures/gui/container/overlay_gui.png");
+    public static final ResourceLocation TEXTURE_FOR_OUTSIDE = new ResourceLocation(VisualiserMod.MODID, "textures/gui/container/overlay_outside_gui.png");
     private static final int MARGIN_X = 4;
     private static final int MARGIN_Y = 8;
     private final NonNullList<ItemStack> items;
@@ -43,7 +43,7 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
     }
 
     private void blit(GuiGraphics guiGraphics, int x, int y, ClientShulkerBoxTooltip.Texture texture) {
-        guiGraphics.blit(TEXTURE_LOCATION, x, y, 0, (float)texture.x, texture.y, texture.w, texture.h, 256, 256);
+        guiGraphics.blit(TEXTURE_FOR_OUTSIDE, x, y, 0, (float)texture.x, texture.y, texture.w, texture.h, 256, 256);
     }
 
     private void renderSlotItems(GuiGraphics guiGraphics, Font font, int x, int y) {
