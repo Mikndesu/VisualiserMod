@@ -18,6 +18,9 @@
 	"entrypoints": {
 		"main": [
 			"com.github.mikn.visualiser.VisualiserMod"
+		],
+		"modmenu": [
+			"com.github.mikn.visualiser.client.screen.VisualiserModMenuIntegration"
 		]
 	},
 	"mixins": [
