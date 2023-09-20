@@ -10,9 +10,12 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+import static java.lang.Math.floor;
+
 public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
     public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(VisualiserMod.MODID, "textures/gui/container/overlay_gui.png");
     private static final int MARGIN_X = 4;
+    private static final int MARGIN_Y = 8;
     private final NonNullList<ItemStack> items;
     private final int weight;
 
@@ -28,7 +31,7 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
 
     @Override
     public int getWidth(Font font) {
-        return 2 * 18 + 2;
+        return 0;
     }
 
     @Override
@@ -42,20 +45,21 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
     }
 
     private void renderSlotItems(GuiGraphics guiGraphics, Font font, int x, int y) {
+        final int SLOT_SIZE = 18;
+        final int MAX_AMOUNT_OF_ITEMS_TO_BE_RENDERED = 12;
+        final int MAX_COLUMN = 6;
         int i = 0;
         for(ItemStack itemStack: this.items) {
-            if(i < 6) {
-                // render the 1st row
-                guiGraphics.renderItem(itemStack, x + MARGIN_X + 18 * i, y + 18, 0);
-                guiGraphics.renderItemDecorations(font, itemStack, x + MARGIN_X + 18 * i, y + 18);
-            } else if (i < 12){
-                // render the 2nd row
-                guiGraphics.renderItem(itemStack, x + MARGIN_X + 18 * (i - 6), y + 36, 0);
-                guiGraphics.renderItemDecorations(font, itemStack, x + MARGIN_X + 18 * (i - 6), y + 36);
-            } else {
+            if(i >= MAX_AMOUNT_OF_ITEMS_TO_BE_RENDERED) {
                 // break loop because rows more than two do not exist.
                 break;
             }
+            // this specifies the column of the slot to be rendered.
+            int column = i % MAX_COLUMN;
+            // this specifies the row of the slot to be rendered
+            int row = (int) floor((double) i / MAX_COLUMN);
+            guiGraphics.renderItem(itemStack, x + MARGIN_X + SLOT_SIZE * column, y + MARGIN_Y + SLOT_SIZE * row, 0);
+            guiGraphics.renderItemDecorations(font, itemStack, x + MARGIN_X + SLOT_SIZE * column, y + MARGIN_Y + SLOT_SIZE * row);
             ++i;
         }
     }
