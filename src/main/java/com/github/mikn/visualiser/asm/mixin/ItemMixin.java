@@ -22,7 +22,7 @@ public class ItemMixin {
 
     @Inject(method = "getTooltipImage(Lnet/minecraft/world/item/ItemStack;)Ljava/util/Optional;", at = @At("RETURN"), cancellable = true)
     private void visualiser$getTooltipImage(ItemStack stack, CallbackInfoReturnable<Optional<ShulkerBoxTooltip>> cir) {
-        if(stack.is(Items.SHULKER_BOX) && ((IItemStackMixin)(Object)stack).visualiser$hasItemsInside(stack)) {
+        if(((IItemStackMixin)(Object)stack).visualiser$isShulkerBox(stack) && ((IItemStackMixin)(Object)stack).visualiser$hasItemsInside(stack)) {
             NonNullList<ItemStack> nonNullList = NonNullList.create();
             this.visualiser$getContents(stack).forEach(nonNullList::add);
             var o = Optional.of(new ShulkerBoxTooltip(nonNullList, 1));

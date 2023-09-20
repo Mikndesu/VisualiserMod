@@ -6,7 +6,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,7 +27,7 @@ public class ItemStackMixin implements IItemStackMixin {
     @Inject(method = "getTooltipLines(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/TooltipFlag;)Ljava/util/List;", at = @At("HEAD"), cancellable = true)
     private void visualiser$getTooltipLines(@Nullable Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir) {
         ItemStack itemStack = (ItemStack) (Object) this;
-        if(itemStack.is(Items.SHULKER_BOX) && this.visualiser$hasItemsInside(itemStack)) {
+        if(this.visualiser$isShulkerBox(itemStack) && this.visualiser$hasItemsInside(itemStack)) {
             ArrayList<Component> list = Lists.newArrayList();
             MutableComponent mutableComponent = Component.empty().append(itemStack.getHoverName()).withStyle(itemStack.getRarity().color);
             if (itemStack.hasCustomHoverName()) {
@@ -44,5 +46,13 @@ public class ItemStackMixin implements IItemStackMixin {
         }
         // we can't get whether ShulkerBox has items inside by ListTag.isEmpty()
         return compoundTag.getCompound("BlockEntityTag").getList("Items", 10).size() != 0;
+    }
+
+    @Unique
+    public boolean visualiser$isShulkerBox(ItemStack itemStack) {
+        if(itemStack.getItem() instanceof BlockItem blockItem) {
+            return blockItem.getBlock().defaultBlockState().is(BlockTags.SHULKER_BOXES);
+        }
+        return false;
     }
 }
