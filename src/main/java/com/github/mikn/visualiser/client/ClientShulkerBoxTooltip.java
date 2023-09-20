@@ -28,7 +28,7 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
 
     @Override
     public int getWidth(Font font) {
-        return this.gridSizeX() * 18 + 2;
+        return 2 * 18 + 2;
     }
 
     @Override
@@ -58,14 +58,6 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
             }
             ++i;
         }
-    }
-
-    private int gridSizeX() {
-        return Math.max(2, (int)Math.ceil(Math.sqrt(this.items.size() + 1)));
-    }
-
-    private int gridSizeY() {
-        return (int)Math.ceil((this.items.size() + 1) / (double)this.gridSizeX());
     }
 
     @Environment(value= EnvType.CLIENT)
