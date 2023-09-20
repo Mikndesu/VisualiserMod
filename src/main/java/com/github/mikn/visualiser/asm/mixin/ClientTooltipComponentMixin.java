@@ -2,9 +2,7 @@ package com.github.mikn.visualiser.asm.mixin;
 
 import com.github.mikn.visualiser.client.ClientShulkerBoxTooltip;
 import com.github.mikn.visualiser.client.ShulkerBoxTooltip;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientBundleTooltip;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.world.inventory.tooltip.BundleTooltip;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
