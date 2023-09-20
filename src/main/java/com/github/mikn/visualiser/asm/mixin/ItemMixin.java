@@ -2,17 +2,19 @@ package com.github.mikn.visualiser.asm.mixin;
 
 import com.github.mikn.visualiser.client.ShulkerBoxTooltip;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Mixin(Item.class)
 public class ItemMixin {
@@ -21,15 +23,20 @@ public class ItemMixin {
     private void visualiser$getTooltipImage(ItemStack stack, CallbackInfoReturnable<Optional<ShulkerBoxTooltip>> cir) {
         if(stack.is(Items.SHULKER_BOX)) {
             NonNullList<ItemStack> nonNullList = NonNullList.create();
-            ArrayList<ItemStack> list = new ArrayList<>(Arrays.asList(new ItemStack(Items.ACACIA_DOOR), new ItemStack(Items.END_STONE), new ItemStack(Items.DIAMOND), new ItemStack(Items.EMERALD), new ItemStack(Items.DIRT), new ItemStack(Items.STONE), new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.ANCIENT_DEBRIS), new ItemStack(Items.DEEPSLATE), new ItemStack(Items.APPLE), new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.END_STONE_BRICK_STAIRS), new ItemStack(Items.COAL_ORE)));
-            // Temporarily add substitute items to the list.
-            list.forEach(elm -> {
-                elm.setCount(64);
-                nonNullList.add(elm);
-            });
+            this.visualiser$getContents(stack).forEach(nonNullList::add);
             var o = Optional.of(new ShulkerBoxTooltip(nonNullList, 1));
             cir.setReturnValue(o);
         }
+    }
+
+    @Unique
+    private Stream<ItemStack> visualiser$getContents(ItemStack stack) {
+        CompoundTag compoundTag = stack.getTag();
+        if (compoundTag == null) {
+            return Stream.empty();
+        }
+        ListTag listTag = compoundTag.getCompound("BlockEntityTag").getList("Items", 10);
+        return listTag.stream().map(CompoundTag.class::cast).map(ItemStack::of);
     }
 
 }
