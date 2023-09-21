@@ -8,8 +8,12 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.Math.floor;
 
@@ -18,11 +22,11 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
     private static final int MARGIN_X = 4;
     private static final int MARGIN_Y = 8;
     private final NonNullList<ItemStack> items;
-    private final int weight;
+    private List<ClientTooltipComponent> comp;
 
     public ClientShulkerBoxTooltip(ShulkerBoxTooltip shulkerBoxTooltip) {
         this.items = shulkerBoxTooltip.getItems();
-        this.weight = shulkerBoxTooltip.getWeight();
+        this.comp = shulkerBoxTooltip.getText().stream().map(Component::getVisualOrderText).map(ClientTooltipComponent::create).collect(Collectors.toList());
     }
 
     @Override
@@ -35,9 +39,26 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
         return 0;
     }
 
+    private int getTextWidth(Font font) {
+        int i = 0;
+        for (ClientTooltipComponent clientTooltipComponent : comp) {
+            int k = clientTooltipComponent.getWidth(font);
+            i = Math.max(i, k);
+        }
+        return i;
+    }
+
+    private int getTextHeight() {
+        int j = comp.size() == 1 ? -2 : 0;
+        for (ClientTooltipComponent clientTooltipComponent : comp) {
+            j += clientTooltipComponent.getHeight();
+        }
+        return j;
+    }
+
     @Override
     public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
-        y = y + (VisualiserMod.HOLDER.position == VisualiserModConfig.OverlayPositionEnum.ON_BELOW ? 2 : -66);
+        y = y + (VisualiserMod.HOLDER.position == VisualiserModConfig.OverlayPositionEnum.ON_BELOW ? 2 : -(50 + MARGIN_Y + getTextHeight()));
         this.blit(guiGraphics, x - MARGIN_X, y, Texture.IMAGE);
         this.renderSlotItems(guiGraphics, font, x, y);
     }

@@ -2,18 +2,22 @@ package com.github.mikn.visualiser.asm.mixin;
 
 import com.github.mikn.visualiser.IItemStackMixin;
 import com.github.mikn.visualiser.client.ShulkerBoxTooltip;
+import com.google.common.collect.Lists;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -25,7 +29,13 @@ public class ItemMixin {
         if(((IItemStackMixin)(Object)stack).visualiser$isShulkerBox(stack) && ((IItemStackMixin)(Object)stack).visualiser$hasItemsInside(stack)) {
             NonNullList<ItemStack> nonNullList = NonNullList.create();
             this.visualiser$getContents(stack).forEach(nonNullList::add);
-            var o = Optional.of(new ShulkerBoxTooltip(nonNullList, 1));
+            ArrayList<Component> list = Lists.newArrayList();
+            MutableComponent mutableComponent = Component.empty().append(stack.getHoverName()).withStyle(stack.getRarity().color);
+            if (stack.hasCustomHoverName()) {
+                mutableComponent.withStyle(ChatFormatting.ITALIC);
+            }
+            list.add(mutableComponent);
+            var o = Optional.of(new ShulkerBoxTooltip(nonNullList, list));
             cir.setReturnValue(o);
         }
     }
