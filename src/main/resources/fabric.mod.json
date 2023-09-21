@@ -2,6 +2,7 @@
 	"schemaVersion": 1,
 	"id": "visualiser",
 	"version": "${version}",
+	"accessWidener": "visualiser.accesswidener",
 	"name": "Visualiser",
 	"description": "",
 	"authors": [

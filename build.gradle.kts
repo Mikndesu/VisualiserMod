@@ -67,4 +67,5 @@ tasks.jar {
 
 loom {
 	mixin.defaultRefmapName.set("visualiser.refmap.json")
+	accessWidenerPath.set(File("src/main/resources/visualiser.accesswidener"))
 }

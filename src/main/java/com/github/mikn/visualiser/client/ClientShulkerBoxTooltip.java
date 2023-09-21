@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +20,7 @@ import static java.lang.Math.floor;
 
 public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
     public static final ResourceLocation TEXTURE_FOR_OUTSIDE = new ResourceLocation(VisualiserMod.MODID, "textures/gui/container/overlay_outside_gui.png");
+    public static final ResourceLocation TEXTURE_FOR_INSIDE = new ResourceLocation(VisualiserMod.MODID, "textures/gui/container/overlay_inside_gui.png");
     private static final int MARGIN_X = 4;
     private static final int MARGIN_Y = 8;
     private final NonNullList<ItemStack> items;
@@ -56,6 +58,10 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
         return j;
     }
 
+    private ResourceLocation getSuitableTexture() {
+        return (VisualiserMod.HOLDER.style == VisualiserModConfig.OverlayStyleEnum.INSIDE_TOOLTIP) ? TEXTURE_FOR_INSIDE: TEXTURE_FOR_OUTSIDE;
+    }
+
     @Override
     public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
         y = y + (VisualiserMod.HOLDER.position == VisualiserModConfig.OverlayPositionEnum.ON_BELOW ? 2 : -(50 + MARGIN_Y + getTextHeight()));
@@ -64,7 +70,10 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
     }
 
     private void blit(GuiGraphics guiGraphics, int x, int y, ClientShulkerBoxTooltip.Texture texture) {
-        guiGraphics.blit(TEXTURE_FOR_OUTSIDE, x, y, 0, (float)texture.x, texture.y, texture.w, texture.h, 256, 256);
+        var TRANSLUCENT_TRANSPARENCY = RenderStateShard.TRANSLUCENT_TRANSPARENCY;
+        TRANSLUCENT_TRANSPARENCY.setupRenderState();
+        guiGraphics.blit(getSuitableTexture(), x, y, 0, (float)texture.x, texture.y, texture.w, texture.h, 256, 256);
+        TRANSLUCENT_TRANSPARENCY.clearRenderState();
     }
 
     private void renderSlotItems(GuiGraphics guiGraphics, Font font, int x, int y) {
