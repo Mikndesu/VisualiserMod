@@ -1,3 +1,8 @@
 accessWidener v2 named
 
 accessible class net/minecraft/client/renderer/RenderStateShard$TransparencyStateShard
+accessible method net/minecraft/client/gui/screens/inventory/tooltip/TooltipRenderUtil renderFrameGradient (Lnet/minecraft/client/gui/GuiGraphics;IIIIIII)V
+accessible method net/minecraft/client/gui/screens/inventory/tooltip/TooltipRenderUtil renderVerticalLine (Lnet/minecraft/client/gui/GuiGraphics;IIIII)V
+accessible method net/minecraft/client/gui/screens/inventory/tooltip/TooltipRenderUtil renderVerticalLineGradient (Lnet/minecraft/client/gui/GuiGraphics;IIIIII)V
+accessible method net/minecraft/client/gui/screens/inventory/tooltip/TooltipRenderUtil renderHorizontalLine (Lnet/minecraft/client/gui/GuiGraphics;IIIII)V
+accessible method net/minecraft/client/gui/screens/inventory/tooltip/TooltipRenderUtil renderRectangle (Lnet/minecraft/client/gui/GuiGraphics;IIIIII)V

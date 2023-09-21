@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -67,6 +68,7 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
         y = y + (VisualiserMod.HOLDER.position == VisualiserModConfig.OverlayPositionEnum.ON_BELOW ? 2 : -(50 + MARGIN_Y + getTextHeight()));
         this.blit(guiGraphics, x - MARGIN_X, y, Texture.IMAGE);
         this.renderSlotItems(guiGraphics, font, x, y);
+//        TooltipRenderUtil.renderRectangle(guiGraphics, x + 30, y + 30, getTextWidth(font) + 6, getTextHeight() + 6, 400, -267386864);
     }
 
     private void blit(GuiGraphics guiGraphics, int x, int y, ClientShulkerBoxTooltip.Texture texture) {
