@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.lang.Math.floor;
 
@@ -67,8 +68,10 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
     public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
         y = y + (VisualiserMod.HOLDER.position == VisualiserModConfig.OverlayPositionEnum.ON_BELOW ? 2 : -(50 + MARGIN_Y + getTextHeight()));
         this.blit(guiGraphics, x - MARGIN_X, y, Texture.IMAGE);
+        for(int i = 0; i < 112; ++i) {
+            guiGraphics.blit(getSuitableTexture(), x - MARGIN_X + 7 + i, y, 0, 52,1,1, 256, 256);
+        }
         this.renderSlotItems(guiGraphics, font, x, y);
-//        TooltipRenderUtil.renderRectangle(guiGraphics, x + 30, y + 30, getTextWidth(font) + 6, getTextHeight() + 6, 400, -267386864);
     }
 
     private void blit(GuiGraphics guiGraphics, int x, int y, ClientShulkerBoxTooltip.Texture texture) {
@@ -100,7 +103,9 @@ public class ClientShulkerBoxTooltip implements ClientTooltipComponent {
 
     @Environment(value= EnvType.CLIENT)
     enum Texture {
-        IMAGE(0, 0, 255, 255);
+        IMAGE(0, 0, 125, 50),
+        INNER_FRAME(0, 52, 1, 1),
+        OUTER_FRAME(1, 52, 1, 1);
 
         public final int x;
         public final int y;
